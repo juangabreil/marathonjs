@@ -26,42 +26,40 @@ Converter =
 class Pedometer
 	_steps: 0
 
-	_count: 0
+	_sampleCount: 0
 
-	_d: null
-
-	_previousVector: null
-
-	_threshold: null
+	_previousVector: x: 1, y: 1, z: 1
 
 	getSteps: -> @_steps
 
-	constructor: (@_threshold)->
+	constructor: (@_threshold=0.97, @_sample_before_evaluation=10)->
 		@_d = []
-		for i in [0...10]
+		@_n = 0
+		for i in [0...@_sample_before_evaluation] by 1
 			@_d.push(1)
-		@_previousVector = x: 1, y: 1, z: 1
+			@_n += (i + 1)
 
-	computeWeigthedMovingAverage = (d) ->
+
+	computeWeigthedMovingAverage = (d,s,n) ->
 		wma = 0
-		for i in [1..10]
+		for i in [1..s] by 1
 			wma += i*d[i-1]
-		wma/55
+		wma/n
 
 	computeVector: (vector) ->
 		if vector.x isnt 0 or vector.y isnt 0 or vector.z isnt 0
 			shiftLeft(@_d)
-			@_d[9] = dotProduct(@_previousVector, vector)/(module(@_previousVector) * module(vector))
-			@_count++
-			@_previousVector = vector
+			@_d[@_sample_before_evaluation - 1] = dotProduct(@_previousVector, vector)/(module(@_previousVector) * module(vector))
+			@_sampleCount++
+			@_previousVector = x: vector.x, y: vector.y, z:vector.z
 
-		if @_count is 10
-			@_count = 0
-			@_steps++ if computeWeigthedMovingAverage(@_d) < @_threshold
+		if @_sampleCount is @_sample_before_evaluation
+			@_sampleCount = 0
+			@_steps++ if computeWeigthedMovingAverage(@_d, @_sample_before_evaluation, @_n) < @_threshold
 
 		return @_steps
 
-	resetCounter: () -> @_steps = 0
+	resetCounter: -> @_steps = 0
 
 	
 root.Converter = Converter
