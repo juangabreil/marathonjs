@@ -1,11 +1,17 @@
 {
-  "name": "js-pedometer",
+  "name": "marathon-js",
   "description": "Javascript library for counting stepts with accelerometer information.",
   "version": "0.0.1",
-  "homepage": "",
+  "homepage":"http://github.com/juangabreil/marathonjs",
   "author": {
-    "name": "Juan Gabriel Jimenez, Francisco de la Torre, Jose Manuel Pena"
+    "name": "Juan Gabriel Jimenez",
+    "email": "juangabreil@gmail.com",
+    "url": "https://twitter.com/juangabreil"
   },
+  "contributors" : [
+    {"name" : "Paco de la Torre"}, 
+    {"name" : "Jose Manuel Pena"}
+  ],
   "keywords": [
     "mobile",
     "accelerometer",

@@ -5,7 +5,7 @@ module.exports = (grunt) ->
 		pkg: grunt.file.readJSON 'package.json'
 
 		meta:
-			file: 'jspedometer'
+			file: 'marathon'
 			banner: '/* <%= pkg.name %> v<%= pkg.version %> - <%= grunt.template.today("yyyy/m/d") %>\n' +
               '   <%= pkg.homepage %>\n' +
               '   Copyright (c) <%= grunt.template.today("yyyy") %> <%= pkg.author.name %>' +
@@ -15,8 +15,8 @@ module.exports = (grunt) ->
 			reports: 'reports'
 
 		source:
-			coffee: 'src/pedometer.coffee'
-			specs: 'spec/pedometer.coffee'
+			coffee: 'src/marathon.coffee'
+			specs: 'spec/marathon.coffee'
 
 		coffee:
 			source: 
