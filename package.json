@@ -9,19 +9,15 @@
     "url": "https://twitter.com/juangabreil"
   },
   "contributors" : [
-    {"name" : "Paco de la Torre"}, 
-    {"name" : "Jose Manuel Pena"}
-  ],
-  "keywords": [
-    "mobile",
-    "accelerometer",
-    "pedometer"
-  ],
-  "license": [
     {
-      "type": "GPLv3"
+      "name" : "Paco de la Torre"
+    },
+    {
+      "name" : "Jose Manuel Pena"
     }
   ],
+  "keywords": [ "mobile", "accelerometer", "pedometer" ],
+  "license": "GPLv3",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.7.0",

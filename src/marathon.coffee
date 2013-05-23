@@ -32,10 +32,10 @@ class Pedometer
 
 	getSteps: -> @_steps
 
-	constructor: (@_threshold=0.97, @_sample_before_evaluation=10)->
+	constructor: (@_threshold=0.97, @_samples_before_evaluation=10)->
 		@_d = []
 		@_n = 0
-		for i in [0...@_sample_before_evaluation] by 1
+		for i in [0...@_samples_before_evaluation] by 1
 			@_d.push(1)
 			@_n += (i + 1)
 
@@ -49,13 +49,13 @@ class Pedometer
 	computeVector: (vector) ->
 		if vector.x isnt 0 or vector.y isnt 0 or vector.z isnt 0
 			shiftLeft(@_d)
-			@_d[@_sample_before_evaluation - 1] = dotProduct(@_previousVector, vector)/(module(@_previousVector) * module(vector))
+			@_d[@_samples_before_evaluation - 1] = dotProduct(@_previousVector, vector)/(module(@_previousVector) * module(vector))
 			@_sampleCount++
 			@_previousVector = x: vector.x, y: vector.y, z:vector.z
 
-		if @_sampleCount is @_sample_before_evaluation
+		if @_sampleCount is @_samples_before_evaluation
 			@_sampleCount = 0
-			@_steps++ if computeWeigthedMovingAverage(@_d, @_sample_before_evaluation, @_n) < @_threshold
+			@_steps++ if computeWeigthedMovingAverage(@_d, @_samples_before_evaluation, @_n) < @_threshold
 
 		return @_steps
 
