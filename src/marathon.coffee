@@ -2,11 +2,22 @@
 
 root = exports ? this
 
+isArray = (value) ->
+  typeof value isnt 'undefined' and
+  value and
+  typeof value is 'object' and
+  value instanceof Array and
+  typeof value.length is 'number' and
+  typeof value.splice is 'function' and not ( value.propertyIsEnumerable 'length' )
+
 shiftLeft = (array) ->
-	len = array.length
-	for i in [1...len] by 1
-		array[i-1] = array[i]
-	return array
+	if isArray array
+		len = array.length
+		first = array[0]
+		for i in [1...len] by 1
+			array[i-1] = array[i]
+		array[len-1] = first
+		return array
 
 dotProduct = (v1, v2) ->
 	v1.x*v2.x + v1.y*v2.y + v1.z*v2.z
@@ -61,6 +72,10 @@ class Pedometer
 
 	resetCounter: -> @_steps = 0
 
-	
-root.Converter = Converter
-root.Pedometer = Pedometer
+root.Marathon or= {}	
+root.Marathon.Converter = Converter
+root.Marathon.Pedometer = Pedometer
+root.Marathon._isArray = isArray
+root.Marathon._shiftLeft = shiftLeft
+root.Marathon._dotProduct = dotProduct
+root.Marathon._module = module
