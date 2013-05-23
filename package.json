@@ -1,6 +1,6 @@
 {
   "name": "marathon-js",
-  "description": "Javascript library for counting stepts with accelerometer information.",
+  "description": "Javascript lightweight library to count steps with accelerometer data.",
   "version": "0.0.1",
   "homepage":"http://github.com/juangabreil/marathonjs",
   "author": {
@@ -16,6 +16,10 @@
       "name" : "Jose Manuel Pena"
     }
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/juangabreil/marathon.js"
+  },
   "keywords": [ "mobile", "accelerometer", "pedometer" ],
   "license": "GPLv3",
   "devDependencies": {

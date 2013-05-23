@@ -1,3 +1,3 @@
 # Marathon-js
 
-Javascript library for counting stepts with accelerometer information.
+Javascript lightweight library to count steps with accelerometer data.
