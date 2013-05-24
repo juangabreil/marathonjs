@@ -26,13 +26,13 @@ module = (v) ->
 	Math.sqrt v.x*v.x + v.y*v.y + v.z*v.z
 
 Converter =
-	STEP_METER_VALUE : 0.762
+	STEP_METER_CONVERSION : 0.762
 
 	stepsToMeters : (steps) ->
-		steps * @STEP_METER_VALUE
+		steps * @STEP_METER_CONVERSION
 
 	metersToSteps : (meters) ->
-		meters / @STEP_METER_VALUE
+		meters / @STEP_METER_CONVERSION
 
 class Pedometer
 	_steps: 0
@@ -41,32 +41,33 @@ class Pedometer
 
 	_previousVector: x: 1, y: 1, z: 1
 
-	getSteps: -> @_steps
+	_computeWeigthedMovingAverage :  ->
+		wma = 0
+		for i in [1..@_samplesBeforeEvaluation] by 1
+			wma += i*@_d[i-1]
+		wma/@_n
 
-	constructor: (@_threshold=0.97, @_samples_before_evaluation=10)->
+	getStepCount: -> @_steps
+
+	constructor: (@_threshold=0.97, @_samplesBeforeEvaluation=10)->
 		@_d = []
 		@_n = 0
-		for i in [0...@_samples_before_evaluation] by 1
+		for i in [0...@_samplesBeforeEvaluation] by 1
 			@_d.push(1)
 			@_n += (i + 1)
 
 
-	computeWeigthedMovingAverage = (d,s,n) ->
-		wma = 0
-		for i in [1..s] by 1
-			wma += i*d[i-1]
-		wma/n
 
 	computeVector: (vector) ->
 		if vector.x isnt 0 or vector.y isnt 0 or vector.z isnt 0
 			shiftLeft(@_d)
-			@_d[@_samples_before_evaluation - 1] = dotProduct(@_previousVector, vector)/(module(@_previousVector) * module(vector))
+			@_d[@_samplesBeforeEvaluation - 1] = dotProduct(@_previousVector, vector)/(module(@_previousVector) * module(vector))
 			@_sampleCount++
 			@_previousVector = x: vector.x, y: vector.y, z:vector.z
 
-		if @_sampleCount is @_samples_before_evaluation
-			@_sampleCount = 0
-			@_steps++ if computeWeigthedMovingAverage(@_d, @_samples_before_evaluation, @_n) < @_threshold
+			if @_sampleCount is @_samplesBeforeEvaluation
+				@_sampleCount = 0
+				@_steps++ if @_computeWeigthedMovingAverage(@_d, @_samplesBeforeEvaluation, @_n) < @_threshold
 
 		return @_steps
 

@@ -2,31 +2,36 @@
   "name": "marathon-js",
   "description": "Javascript lightweight library to count steps with accelerometer data.",
   "version": "0.0.1",
-  "homepage":"http://github.com/juangabreil/marathonjs",
+  "homepage": "http://github.com/juangabreil/marathonjs",
   "author": {
     "name": "Juan Gabriel Jimenez",
     "email": "juangabreil@gmail.com",
     "url": "https://twitter.com/juangabreil"
   },
-  "contributors" : [
+  "contributors": [
     {
-      "name" : "Paco de la Torre"
+      "name": "Paco de la Torre"
     },
     {
-      "name" : "Jose Manuel Pena"
+      "name": "Jose Manuel Pena"
     }
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/juangabreil/marathon.js"
   },
-  "keywords": [ "mobile", "accelerometer", "pedometer" ],
+  "keywords": [
+    "mobile",
+    "accelerometer",
+    "pedometer"
+  ],
   "license": "GPLv3",
   "devDependencies": {
     "grunt": "~0.4.1",
     "grunt-contrib-coffee": "~0.7.0",
     "grunt-contrib-uglify": "~0.2.0",
     "grunt-contrib-jasmine": "~0.4.2",
-    "grunt-template-jasmine-istanbul": "~0.2.3"
+    "grunt-template-jasmine-istanbul": "~0.2.3",
+    "grunt-contrib-watch": "~0.4.3"
   }
 }

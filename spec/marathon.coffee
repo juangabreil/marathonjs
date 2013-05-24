@@ -36,9 +36,79 @@ describe 'module auxiliary function', ->
 		expect(Marathon._module(v1)).toBe(1)
 
 describe 'pedometer', ->
-	it 'should publish pedometer', ->
-		expect(typeof Marathon.Pedometer).toBe('function')
+	pedometer = null
+	threshold = 0.95
+	samplesBeforeEvaluation = 5
+	n = 15
+
+
+	beforeEach ->
+		pedometer = new Marathon.Pedometer(threshold, samplesBeforeEvaluation)
+
+	it 'should create a pedometer with default values for "threshold" and "samples before evaluation" fields', ->
+		pedometer = new Marathon.Pedometer
+		expect(pedometer._threshold).toBe(0.97)
+		expect(pedometer._samplesBeforeEvaluation).toBe(10)
+		expect(pedometer._n).toBe(55)
+		expect(pedometer._d.length).toBe(10)
+
+	it 'should create a pedometer with given values for "threshold" and "samples before evaluation" fields', ->
+		_n = 0
+		_n += i for i in [1..samplesBeforeEvaluation] by 1
+		expect(pedometer._threshold).toBe(threshold)
+		expect(pedometer._samplesBeforeEvaluation).toBe(samplesBeforeEvaluation)
+		expect(pedometer._n).toBe(_n)
+		expect(pedometer._d.length).toBe(samplesBeforeEvaluation)
+
+	it 'should calculate weigthed moving average', ->
+		_d = [1, 0.95, 0.96, 0.94, 1]
+		pedometer._d = _d
+		wma = (1*1 + 2*0.95 + 3*0.96 + 4*0.94 + 5*1)/n
+		expect(pedometer._computeWeigthedMovingAverage().toFixed(3)).toBe(wma.toFixed(3))
+
+	it 'should return 1 calculating weigthed moving average at the beginning', ->
+		wma = pedometer._computeWeigthedMovingAverage()
+		expect(wma).toBe(1)
+
+	it 'should not compute a vector if it is null', ->
+		vector = x:0, y:0, z:0
+		pedometer.computeVector(vector)
+		expect(pedometer._previousVector).toEqual(x:1, y:1, z:1)
+
+	it 'should not increment the step count computing a vector because the sample count has not been completed', ->
+		vector = x:0, y:-1, z:0
+		steps = pedometer.computeVector(vector)
+		expect(pedometer._previousVector).toEqual(vector)
+		expect(steps).toBe(0)
+
+	it 'should not increment the step count computing a vector because the movement is greater than the threshold', ->
+		vector = x:0, y:0.5, z:0
+		steps = pedometer.computeVector(vector) for i in [0...samplesBeforeEvaluation] by 1
+		expect(steps).toBe(0)
+
+	it 'should increment the step count computing a vector because the movement is lesser than the threshold', ->
+		vector = x:0, y:-1, z:0
+		steps = pedometer.computeVector(vector) for i in [0...samplesBeforeEvaluation] by 1
+		expect(steps).toBe(1)
+
+	it 'should be able to reset the counter', ->
+		pedometer._steps = 10
+		pedometer.resetCounter()
+		expect(pedometer._steps).toBe(0)
+
+	it 'should be able to return the number of steps', ->
+		expect(pedometer.getStepCount()).toBe(pedometer._steps)
+
+
+
+
+
 
 describe 'converter', ->
-	it 'should publish converter', ->
-		expect(typeof Marathon.Converter).toBe('object')
+	it 'should convert steps to meters', ->
+		steps = 5
+		expect(Marathon.Converter.stepsToMeters(steps)).toBe(steps * Marathon.Converter.STEP_METER_CONVERSION)
+
+	it 'should convert meters to steps', ->
+		meters = 10
+		expect(Marathon.Converter.metersToSteps(meters)).toBe(meters / Marathon.Converter.STEP_METER_CONVERSION)

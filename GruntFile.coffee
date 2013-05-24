@@ -40,8 +40,15 @@ module.exports = (grunt) ->
 					coverage: '<%=meta.build%>/<%=meta.file%>-<%=pkg.version%>/<%=meta.reports%>/coverage.json'
 					report: '<%=meta.build%>/<%=meta.file%>-<%=pkg.version%>/<%=meta.reports%>/coverage'
 
+		watch: 
+			src: 
+				files: ['<%= source.coffee %>','<%= source.specs %>']
+				tasks: ['default']
+
+
 	grunt.loadNpmTasks 'grunt-contrib-coffee'
 	grunt.loadNpmTasks 'grunt-contrib-uglify'
 	grunt.loadNpmTasks 'grunt-contrib-jasmine'
+	grunt.loadNpmTasks 'grunt-contrib-watch'
 
 	grunt.registerTask 'default', ['coffee', 'uglify', 'jasmine']	
